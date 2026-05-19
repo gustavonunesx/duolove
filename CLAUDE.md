@@ -170,13 +170,17 @@ NEXT_PUBLIC_APP_URL=
 
 ---
 
-## Milestone Completion Protocol
+## Milestone Git Flow
 
-**At the end of every milestone, Claude must:**
+**Início de cada milestone:**
+1. Criar branch a partir de `main` com o nome definido no PLAN.md (ex: `git checkout -b feat/auth-ui`)
 
-1. **Check off all completed deliverables** in `docs/PLAN.md` — mark each done item as `[x]` and add `✅ CONCLUÍDA` to the milestone heading.
-2. **Update `CLAUDE.md`** — update the Build Milestones table to reflect the current status (add a ✅ next to completed milestones).
-3. **Create the closing commit** using the exact message defined in the milestone's `Commit final` block.
-4. **Do not move to the next milestone** until the current one is checked off in `docs/PLAN.md`.
-
-This keeps project state always readable at a glance from both files.
+**Final de cada milestone:**
+1. Marcar todas as entregas como `[x]` e adicionar `✅ CONCLUÍDA` ao heading no `docs/PLAN.md`
+2. Atualizar status da milestone no `CLAUDE.md` (tabela de milestones)
+3. Fazer o commit final com a mensagem exata definida no bloco `Commit final` do PLAN.md
+4. Push da branch: `git push -u origin <branch>`
+5. Abrir PR para `main` via `gh pr create`
+6. Fazer merge: `gh pr merge --merge --delete-branch`
+7. Deletar branch local: `git branch -d <branch>`
+8. Voltar para `main`: `git checkout main && git pull`
