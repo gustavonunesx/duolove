@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
 import { GradientButton } from "@/components/shared/gradient-button";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@/lib/utils";
 
 const plans = [
   {

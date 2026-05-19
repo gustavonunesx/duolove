@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { GradientButton } from "@/components/shared/gradient-button";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Funcionalidades", href: "#features" },

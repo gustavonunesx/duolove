@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Heart, Calendar, Sparkles } from "lucide-react";
 import { GradientButton } from "@/components/shared/gradient-button";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@/lib/utils";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
