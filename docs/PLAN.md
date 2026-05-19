@@ -27,27 +27,27 @@
 
 ---
 
-## M1 — Setup & Design System
+## M1 — Setup & Design System ✅ CONCLUÍDA
 
 **Branch:** `setup/foundation`
 **Objetivo:** Projeto Next.js configurado com toda a base visual do DuoLove. Nenhuma funcionalidade real — só estrutura e tokens de design.
 
 ### Entregas
 
-- [ ] Inicializar projeto com `create-next-app` (TypeScript, App Router, Tailwind)
-- [ ] Configurar `tailwind.config.ts` com paleta DuoLove (rosa, lilás, vinho, creme, preto fosco)
-- [ ] Instalar e configurar shadcn/ui
-- [ ] Criar variáveis CSS globais em `styles/globals.css`
-- [ ] Instalar Framer Motion
-- [ ] Criar estrutura de pastas conforme CLAUDE.md (`app/`, `components/`, `lib/`, `hooks/`, `types/`)
-- [ ] Configurar fontes (Plus Jakarta Sans via `next/font`)
-- [ ] Criar componentes base: `GlassCard`, `GradientButton`, `Badge`, `Avatar`
-- [ ] Configurar `components/ui/` com shadcn primitives (Button, Input, Dialog, Dropdown, Tabs, Sheet)
-- [ ] Criar `app/layout.tsx` root com providers (tema, fontes)
-- [ ] Página `/` redirecionando para landing (placeholder)
+- [x] Inicializar projeto com `create-next-app` (TypeScript, App Router, Tailwind)
+- [x] Configurar `tailwind.config.ts` com paleta DuoLove (rosa, lilás, vinho, creme, preto fosco)
+- [x] Instalar e configurar shadcn/ui
+- [x] Criar variáveis CSS globais em `styles/globals.css`
+- [x] Instalar Framer Motion
+- [x] Criar estrutura de pastas conforme CLAUDE.md (`app/`, `components/`, `lib/`, `hooks/`, `types/`)
+- [x] Configurar fontes (Plus Jakarta Sans via `next/font`)
+- [x] Criar componentes base: `GlassCard`, `GradientButton`, `Badge`, `Avatar`
+- [x] Configurar `components/ui/` com shadcn primitives (Button, Input, Dialog, Dropdown, Tabs, Sheet)
+- [x] Criar `app/layout.tsx` root com providers (tema, fontes)
+- [x] Página `/` redirecionando para landing (placeholder)
 - [ ] Configurar `.env.example` com todas as variáveis necessárias
-- [ ] Configurar ESLint + Prettier + `tsconfig.json` strict
-- [ ] README.md inicial com instruções de setup local
+- [x] Configurar ESLint + Prettier + `tsconfig.json` strict
+- [x] README.md inicial com instruções de setup local
 
 **Commit final:**
 ```
@@ -56,25 +56,25 @@ feat(setup): initialize project with design system and folder structure
 
 ---
 
-## M2 — Landing Page
+## M2 — Landing Page ✅ CONCLUÍDA
 
 **Branch:** `feat/landing-page`
 **Objetivo:** Página de marketing completa e responsiva, sem backend. Estática, com animações.
 
 ### Entregas
 
-- [ ] Layout da landing em `app/(marketing)/page.tsx`
-- [ ] Seção Hero: headline + CTA + mockup do app (imagem/ilustração)
-- [ ] Seção Features: 6 features com ícones e descrição curta
-- [ ] Seção "Como funciona": 3 passos ilustrados
-- [ ] Seção de depoimentos (mock)
-- [ ] Seção Pricing: plano free vs. premium com tabela de comparação
-- [ ] Seção CTA final com campo de e-mail (sem envio real)
-- [ ] Footer com links e redes sociais
-- [ ] Header com nav e botão "Entrar" / "Começar grátis"
-- [ ] Animações de entrada com Framer Motion (scroll-triggered)
-- [ ] Totalmente responsivo (mobile-first)
-- [ ] Meta tags Open Graph e `<title>` para SEO básico
+- [x] Layout da landing em `app/(marketing)/home/page.tsx`
+- [x] Seção Hero: headline + CTA + mockup do app (card animado)
+- [x] Seção Features: 6 features com ícones e descrição curta
+- [x] Seção "Como funciona": 3 passos ilustrados
+- [x] Seção de depoimentos (mock)
+- [x] Seção Pricing: plano free vs. premium com tabela de comparação
+- [x] Seção CTA final com campo de e-mail (sem envio real)
+- [x] Footer com links e redes sociais
+- [x] Header com nav e botão "Entrar" / "Começar grátis"
+- [x] Animações de entrada com Framer Motion (scroll-triggered)
+- [x] Totalmente responsivo (mobile-first)
+- [x] Meta tags Open Graph e `<title>` para SEO básico
 
 **Commit final:**
 ```

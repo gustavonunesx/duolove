@@ -114,18 +114,24 @@ The UI should feel intimate, not corporate. Warm, not clinical. Every empty stat
 
 ## Build Milestones
 
-| # | Milestone | Core Deliverable |
+> Milestones seguem o plano detalhado em [docs/PLAN.md](docs/PLAN.md). A ordem foi reorganizada para frontend-first (ver PLAN.md).
+
+| # | Milestone (PLAN.md ref) | Status |
 |---|---|---|
-| 1 | Foundation | Next.js scaffold, Supabase setup, Prisma schema, auth (email + Google) |
-| 2 | Couple Linking | Invite flow, couple connection, user profiles |
-| 3 | Shared Calendar | Event CRUD, real-time sync, daily/weekly/monthly views |
-| 4 | Dashboard | Days-together counter, upcoming events, anniversary alerts |
-| 5 | Chat & Reactions | In-event messaging, emoji reactions |
-| 6 | Memories | Photo upload, memory timeline, captions |
-| 7 | Notifications | Email (Resend) + push alerts for events and anniversaries |
-| 8 | Premium & Stripe | Subscription plans, gated features, billing portal |
-| 9 | Onboarding | Guided setup flow, theme picker, couple profile |
-| 10 | Landing Page | Marketing page, pricing section, sign-up CTA |
+| M1 | Setup & Design System | ✅ Concluída (pendente: `.env.example`) |
+| M2 | Landing Page | ✅ Concluída |
+| M3 | Auth UI & Onboarding | ⬜ Próxima |
+| M4 | App Shell & Dashboard UI | ⬜ |
+| M5 | Calendário UI | ⬜ |
+| M6 | Chat UI | ⬜ |
+| M7 | Memórias UI | ⬜ |
+| M8 | Backend Foundation | ⬜ |
+| M9 | Backend Calendário | ⬜ |
+| M10 | Backend Social | ⬜ |
+| M11 | Notificações | ⬜ |
+| M12 | Premium & Stripe | ⬜ |
+| M13 | Polish & Qualidade | ⬜ |
+| M14 | Deploy | ⬜ |
 
 ---
 
@@ -161,3 +167,16 @@ NEXT_PUBLIC_APP_URL=
 - Premium features should be gated via a `plan` field on the couple entity
 - Emotional copywriting matters — placeholder text, empty states, and notifications should reflect the app's warm, intimate tone
 - Accessibility and mobile-first responsiveness are non-negotiable from the start
+
+---
+
+## Milestone Completion Protocol
+
+**At the end of every milestone, Claude must:**
+
+1. **Check off all completed deliverables** in `docs/PLAN.md` — mark each done item as `[x]` and add `✅ CONCLUÍDA` to the milestone heading.
+2. **Update `CLAUDE.md`** — update the Build Milestones table to reflect the current status (add a ✅ next to completed milestones).
+3. **Create the closing commit** using the exact message defined in the milestone's `Commit final` block.
+4. **Do not move to the next milestone** until the current one is checked off in `docs/PLAN.md`.
+
+This keeps project state always readable at a glance from both files.
