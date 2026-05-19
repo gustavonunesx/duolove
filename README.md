@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DuoLove
 
-## Getting Started
+O app de calendário compartilhado para casais. Organizem a rotina, celebrem datas especiais e registrem memórias juntos.
 
-First, run the development server:
+## Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Linguagem**: TypeScript (strict)
+- **UI**: Tailwind CSS v4 + shadcn/ui
+- **Animações**: Framer Motion
+- **Banco de dados**: PostgreSQL via Supabase + Prisma
+- **Auth**: Supabase Auth (email + OAuth Google)
+- **Storage**: Supabase Storage
+- **Email**: Resend
+- **Pagamentos**: Stripe
+- **Deploy**: Vercel
+
+## Setup local
+
+### 1. Clone e instale dependências
+
+```bash
+git clone <repo-url>
+cd duolove
+npm install
+```
+
+### 2. Configure variáveis de ambiente
+
+```bash
+cp .env.example .env.local
+```
+
+Preencha todos os valores no `.env.local`:
+
+| Variável | Onde obter |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Dashboard Supabase → Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Dashboard Supabase → Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Dashboard Supabase → Settings → API |
+| `DATABASE_URL` | Dashboard Supabase → Settings → Database (porta 6543) |
+| `DIRECT_URL` | Dashboard Supabase → Settings → Database (porta 5432) |
+| `STRIPE_SECRET_KEY` | Dashboard Stripe → Developers → API Keys |
+| `STRIPE_WEBHOOK_SECRET` | Dashboard Stripe → Webhooks |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Dashboard Stripe → Developers → API Keys |
+| `RESEND_API_KEY` | Dashboard Resend → API Keys |
+
+### 3. Configure o banco de dados
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+### 4. Rode o servidor de desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts disponíveis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev        # Servidor de desenvolvimento
+npm run build      # Build de produção
+npm run start      # Servidor de produção
+npm run lint       # ESLint
+npm run format     # Prettier
+```
 
-## Learn More
+## Estrutura de pastas
 
-To learn more about Next.js, take a look at the following resources:
+```
+duolove/
+├── app/
+│   ├── (auth)/          # Login, cadastro, onboarding
+│   ├── (app)/           # App autenticado (dashboard, calendário, chat, memórias)
+│   ├── (marketing)/     # Landing page e pricing
+│   └── api/             # API routes
+├── components/
+│   ├── ui/              # Primitivos shadcn/ui
+│   ├── calendar/        # Componentes do calendário
+│   ├── chat/            # Componentes de mensagens
+│   └── shared/          # Componentes reutilizáveis (GlassCard, GradientButton...)
+├── lib/                 # Clientes e utilitários
+├── hooks/               # React hooks customizados
+├── types/               # Tipos TypeScript compartilhados
+├── prisma/              # Schema e migrations
+└── docs/                # PRD, PLAN e documentação
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Plano de execução
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Consulte [docs/PLAN.md](../docs/PLAN.md) para a sequência de milestones e status atual.
 
-## Deploy on Vercel
+## Identidade visual
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Papel | Cor | Hex |
+|---|---|---|
+| Primário (rose) | Rosa DuoLove | `#E91E8C` |
+| Secundário (lilac) | Lilás | `#9B59B6` |
+| Acento (wine) | Vinho | `#8B0051` |
+| Superfície | Preto fosco | `#0D0D0D` |
+| Card | Vidro escuro | `#1A1A2E` |
+| Texto | Creme | `#F5F0EB` |
