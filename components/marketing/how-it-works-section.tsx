@@ -1,17 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { UserPlus, Link2, CalendarHeart } from "lucide-react";
+import { Smartphone, Link2, CalendarHeart } from "lucide-react";
 
 const steps = [
   {
     number: "01",
-    icon: UserPlus,
-    title: "Crie sua conta",
+    icon: Smartphone,
+    title: "Baixe o app",
     description:
-      "Cadastre-se em segundos com seu e-mail ou conta Google. Rápido, simples e seguro.",
-    color: "text-rose",
-    bg: "from-rose/20 to-rose/5",
+      "Disponível para iOS e Android. Instale em segundos e crie seu perfil com e-mail ou Google.",
+    accent: "rose",
+    bg: "from-rose/15 to-rose/3",
     border: "border-rose/20",
   },
   {
@@ -19,52 +19,62 @@ const steps = [
     icon: Link2,
     title: "Conecte-se ao seu amor",
     description:
-      "Envie um convite especial para seu parceiro(a). Quando ele(a) aceitar, vocês ficam conectados no app.",
-    color: "text-lilac",
-    bg: "from-lilac/20 to-lilac/5",
+      "Envie um convite especial para seu parceiro(a). Quando aceito, vocês ficam conectados no app.",
+    accent: "lilac",
+    bg: "from-lilac/15 to-lilac/3",
     border: "border-lilac/20",
   },
   {
     number: "03",
     icon: CalendarHeart,
-    title: "Organizem a vida juntos",
+    title: "Organizem juntos",
     description:
       "Criem eventos, registrem memórias, troquem mensagens e nunca percam uma data especial.",
-    color: "text-rose",
-    bg: "from-wine/20 to-wine/5",
+    accent: "wine",
+    bg: "from-wine/15 to-wine/3",
     border: "border-wine/20",
   },
 ];
 
+const accentText: Record<string, string> = {
+  rose: "text-rose",
+  lilac: "text-lilac",
+  wine: "text-wine",
+};
+
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="bg-surface-elevated/50 py-24">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+    <section id="how-it-works" className="relative py-28 overflow-hidden">
+      <div className="absolute inset-0 bg-[#080810]" aria-hidden="true" />
+      <div className="absolute left-1/2 top-0 h-px w-full max-w-2xl -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
+      <div className="absolute left-1/2 bottom-0 h-px w-full max-w-2xl -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-6">
         {/* Título */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
+          transition={{ duration: 0.7 }}
+          className="mb-20 text-center"
         >
-          <span className="mb-4 inline-block rounded-full border border-rose/30 bg-rose/10 px-4 py-1.5 text-sm text-rose">
+          <span className="mb-5 inline-block rounded-full border border-rose/25 bg-rose/8 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-rose/80">
             Como funciona
           </span>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-display text-4xl font-light leading-tight text-foreground sm:text-5xl">
             Três passos para{" "}
-            <span className="text-gradient-rose">começar juntos</span>
+            <span className="text-gradient-rose italic">começar juntos</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-            Sem complicação. Em menos de 5 minutos, o casal já está conectado e organizando a vida a dois.
+          <p className="mx-auto mt-4 max-w-lg text-base text-muted-foreground">
+            Em menos de 5 minutos, o casal já está conectado e organizando a vida a dois.
           </p>
         </motion.div>
 
         {/* Steps */}
-        <div className="relative grid gap-8 md:grid-cols-3">
-          {/* Linha conectando os passos (desktop) */}
+        <div className="relative grid gap-6 md:grid-cols-3">
+          {/* Linha conectora */}
           <div
-            className="absolute left-1/6 right-1/6 top-10 hidden h-px bg-gradient-to-r from-rose/30 via-lilac/30 to-rose/30 md:block"
+            className="absolute left-[20%] right-[20%] top-10 hidden h-px bg-gradient-to-r from-rose/20 via-lilac/20 to-wine/20 md:block"
             aria-hidden="true"
           />
 
@@ -73,21 +83,18 @@ export function HowItWorksSection() {
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
                 className="relative flex flex-col items-center text-center"
               >
-                {/* Número + ícone */}
+                {/* Círculo com ícone */}
                 <div
-                  className={`relative mb-6 flex h-20 w-20 items-center justify-center rounded-full border ${step.border} bg-gradient-to-br ${step.bg}`}
+                  className={`relative mb-8 flex h-20 w-20 items-center justify-center rounded-full border ${step.border} bg-gradient-to-br ${step.bg}`}
                 >
-                  <Icon className={step.color} size={28} aria-hidden="true" />
-                  <span
-                    className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-card text-xs font-bold text-muted-foreground"
-                    aria-hidden="true"
-                  >
+                  <Icon className={accentText[step.accent]} size={26} aria-hidden="true" />
+                  <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-[#080810] text-[10px] font-bold text-muted-foreground border border-white/10">
                     {step.number}
                   </span>
                 </div>
