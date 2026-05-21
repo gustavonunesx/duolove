@@ -3,11 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
-import { GradientButton } from "@/components/shared/gradient-button";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Funcionalidades", href: "#features" },
@@ -28,7 +25,7 @@ export function MarketingHeader() {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 z-50 w-full transition-all duration-500 ${
         scrolled
           ? "glass border-b border-white/8 shadow-lg"
           : "bg-transparent"
@@ -45,21 +42,19 @@ export function MarketingHeader() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        {/* Botões desktop */}
+        {/* Badge "Em breve" desktop */}
         <div className="hidden items-center gap-3 md:flex">
-          <Link href="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
-            Entrar
-          </Link>
-          <GradientButton size="sm" asChild>
-            <Link href="/signup">Começar grátis</Link>
-          </GradientButton>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-rose/25 bg-rose/8 px-4 py-1.5 text-xs font-medium text-rose/90">
+            <Sparkles size={12} aria-hidden="true" />
+            Em breve nas lojas
+          </span>
         </div>
 
         {/* Botão mobile */}
@@ -94,19 +89,11 @@ export function MarketingHeader() {
                   {link.label}
                 </Link>
               ))}
-              <div className="mt-3 flex flex-col gap-2 border-t border-white/8 pt-3">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "justify-start")}
-                >
-                  Entrar
-                </Link>
-                <GradientButton size="sm" asChild>
-                  <Link href="/signup" onClick={() => setMobileOpen(false)}>
-                    Começar grátis
-                  </Link>
-                </GradientButton>
+              <div className="mt-3 border-t border-white/8 pt-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-rose/25 bg-rose/8 px-4 py-1.5 text-xs font-medium text-rose/90">
+                  <Sparkles size={12} aria-hidden="true" />
+                  Em breve nas lojas
+                </span>
               </div>
             </nav>
           </motion.div>
