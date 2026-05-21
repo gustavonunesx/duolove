@@ -170,6 +170,25 @@ NEXT_PUBLIC_APP_URL=
 
 ---
 
+## Landing Page Rebuild — /impeccable
+
+Ao continuar o rebuild da landing page, sempre carregar estes arquivos de referência antes de tomar decisões de design:
+
+- `C:\Users\Gusatvo\.claude\skills\impeccable\reference\brand.md` — cor committed, tipografia, layout assimétrico
+- `C:\Users\Gusatvo\.claude\skills\impeccable\reference\animate.md` — scroll reveals, motion de entrada orquestrado
+- `C:\Users\Gusatvo\.claude\skills\impeccable\reference\layout.md` — ritmo de espaçamento, hierarquia sem cards
+
+**Brief confirmado:** `PRODUCT.md` na raiz do projeto.
+
+**Direção visual:**
+- Tema: escuro quente (espresso OKLCH, não preto frio)
+- Cor committed: bordeaux profundo (`oklch(38% 0.13 15)`)
+- Fonte: Bricolage Grotesque (800 display, 400 body)
+- Sem glassmorphism, sem gradient text, sem grid de cards idênticos
+- Mobile-first obrigatório — maioria dos usuários chega pelo celular
+
+---
+
 ## Milestone Git Flow
 
 **Início de cada milestone:**

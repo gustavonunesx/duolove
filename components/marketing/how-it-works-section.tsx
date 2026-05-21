@@ -8,97 +8,85 @@ const steps = [
     number: "01",
     icon: UserPlus,
     title: "Crie sua conta",
-    description:
-      "Cadastre-se em segundos com seu e-mail ou conta Google. Rápido, simples e seguro.",
-    color: "text-rose",
-    bg: "from-rose/20 to-rose/5",
-    border: "border-rose/20",
+    description: "Cadastre-se em segundos com seu e-mail ou conta Google.",
   },
   {
     number: "02",
     icon: Link2,
     title: "Conecte-se ao seu amor",
-    description:
-      "Envie um convite especial para seu parceiro(a). Quando ele(a) aceitar, vocês ficam conectados no app.",
-    color: "text-lilac",
-    bg: "from-lilac/20 to-lilac/5",
-    border: "border-lilac/20",
+    description: "Envie um convite para seu parceiro(a). Quando aceitar, vocês ficam conectados.",
   },
   {
     number: "03",
     icon: CalendarHeart,
     title: "Organizem a vida juntos",
-    description:
-      "Criem eventos, registrem memórias, troquem mensagens e nunca percam uma data especial.",
-    color: "text-rose",
-    bg: "from-wine/20 to-wine/5",
-    border: "border-wine/20",
+    description: "Criem eventos, registrem memórias e nunca percam uma data especial.",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="bg-surface-elevated/50 py-24">
+    <section id="how-it-works" className="warm-surface py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        {/* Título */}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
+          className="mb-16"
         >
-          <span className="mb-4 inline-block rounded-full border border-rose/30 bg-rose/10 px-4 py-1.5 text-sm text-rose">
-            Como funciona
-          </span>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Três passos para{" "}
-            <span className="text-gradient-rose">começar juntos</span>
+          <h2 className="text-[clamp(2rem,5vw,3.25rem)] font-extrabold leading-tight tracking-tight text-ivory">
+            Três passos para
+            <br />
+            <span className="text-amber">começarem juntos.</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-            Sem complicação. Em menos de 5 minutos, o casal já está conectado e organizando a vida a dois.
+          <p className="mt-4 max-w-md text-taupe">
+            Sem complicação. Em menos de 5 minutos, o casal já está conectado.
           </p>
         </motion.div>
 
-        {/* Steps */}
-        <div className="relative grid gap-8 md:grid-cols-3">
-          {/* Linha conectando os passos (desktop) */}
+        <div className="relative">
+          {/* Linha conectora — desktop */}
           <div
-            className="absolute left-1/6 right-1/6 top-10 hidden h-px bg-gradient-to-r from-rose/30 via-lilac/30 to-rose/30 md:block"
+            className="absolute left-[calc(3.5rem+1px)] top-10 hidden h-[calc(100%-5rem)] w-px bg-gradient-to-b from-bordeaux/40 via-amber/20 to-transparent md:block"
             aria-hidden="true"
           />
 
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <motion.div
-                key={step.number}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="relative flex flex-col items-center text-center"
-              >
-                {/* Número + ícone */}
-                <div
-                  className={`relative mb-6 flex h-20 w-20 items-center justify-center rounded-full border ${step.border} bg-gradient-to-br ${step.bg}`}
+          <div className="space-y-12 md:space-y-14">
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <motion.div
+                  key={step.number}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex items-start gap-6"
                 >
-                  <Icon className={step.color} size={28} aria-hidden="true" />
-                  <span
-                    className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-card text-xs font-bold text-muted-foreground"
-                    aria-hidden="true"
-                  >
-                    {step.number}
-                  </span>
-                </div>
+                  {/* Ícone + número */}
+                  <div className="relative flex-shrink-0">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-bordeaux/35 bg-espresso">
+                      <Icon className="text-bordeaux-light" size={22} aria-hidden="true" />
+                    </div>
+                    <span
+                      className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-bordeaux text-[10px] font-bold text-ivory"
+                      aria-hidden="true"
+                    >
+                      {i + 1}
+                    </span>
+                  </div>
 
-                <h3 className="mb-3 text-lg font-semibold text-foreground">{step.title}</h3>
-                <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
-              </motion.div>
-            );
-          })}
+                  {/* Texto */}
+                  <div className="pt-2">
+                    <h3 className="text-lg font-bold text-ivory md:text-xl">{step.title}</h3>
+                    <p className="mt-1.5 max-w-md text-taupe">{step.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
