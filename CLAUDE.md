@@ -1,10 +1,10 @@
-# DuoLove — Project Briefing for Claude
+# DuoLove — Landing Page
 
-## What is DuoLove
+## O que é este repositório
 
-DuoLove is a shared calendar app for couples that combines scheduling, communication, and emotional connection in one platform. It replaces scattered WhatsApp messages, separate calendars, and forgotten reminders with a warm, beautiful, and emotionally meaningful experience.
+Este repo é **exclusivamente a landing page de vendas** do DuoLove — um app de calendário compartilhado para casais. O app em si está em outro repositório.
 
-Full PRD: [docs/PRD.md](docs/PRD.md)
+O objetivo desta página é converter visitantes em downloads/assinantes, redirecionando para a App Store, Google Play, e/ou fluxo de pagamento.
 
 ---
 
@@ -15,172 +15,102 @@ Full PRD: [docs/PRD.md](docs/PRD.md)
 | Framework | Next.js (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS + shadcn/ui |
-| Database | PostgreSQL via Supabase |
-| ORM | Prisma |
-| Auth | Supabase Auth (OAuth Google/Apple) |
-| Storage | Supabase Storage |
-| Email | Resend |
-| Payments | Stripe |
+| Animations | Framer Motion |
 | Deploy | Vercel |
 
 ---
 
-## Folder Structure
+## Estrutura de Pastas
 
 ```
-duolove/
-├── app/                    # Next.js App Router pages
-│   ├── (auth)/             # Login, signup, invite flows
-│   ├── (app)/              # Authenticated app shell
-│   │   ├── dashboard/
-│   │   ├── calendar/
-│   │   ├── chat/
-│   │   ├── memories/
-│   │   └── settings/
-│   ├── (marketing)/        # Landing page, pricing
-│   └── api/                # API routes
+duolove-web/
+├── app/
+│   ├── (marketing)/        # Todas as páginas públicas
+│   │   └── home/page.tsx   # Landing page principal
+│   ├── layout.tsx
+│   ├── page.tsx            # Redireciona para /home
+│   └── globals.css
 ├── components/
-│   ├── ui/                 # shadcn/ui primitives
-│   ├── calendar/           # Calendar-specific components
-│   ├── chat/               # Messaging components
-│   └── shared/             # Reusable app components
-├── lib/
-│   ├── supabase/           # Supabase client + server helpers
-│   ├── prisma/             # Prisma client singleton
-│   ├── stripe/             # Stripe helpers
-│   └── utils/              # Shared utilities
-├── prisma/
-│   └── schema.prisma       # Database schema
-├── hooks/                  # Custom React hooks
-├── types/                  # Shared TypeScript types
-├── styles/                 # Global CSS, Tailwind config
-└── docs/                   # PRD and project docs
+│   ├── marketing/          # Seções da landing page
+│   ├── shared/             # GlassCard, GradientButton, Logo, ThemeProvider
+│   └── ui/                 # shadcn primitives (button, badge, card, input)
+└── lib/
+    └── utils.ts            # cn() utility
 ```
 
 ---
 
 ## Design Identity
 
-### Color Palette
+### Paleta de cores
 
-| Role | Color | Hex |
-|---|---|---|
-| Primary accent | Rose/Pink | `#E91E8C` or similar warm rose |
-| Secondary | Lilac/Purple | `#9B59B6` range |
-| Surface dark | Matte black | `#0D0D0D` / `#111111` |
-| Surface card | Dark glass | `#1A1A2E` with opacity |
-| Text primary | Cream/White | `#F5F0EB` |
-| Text muted | Warm gray | `#8B8B9E` |
-| Accent wine | Deep rose | `#8B0051` |
+| Role | Hex |
+|---|---|
+| Primary Rose | `#E91E8C` |
+| Secondary Lilac | `#9B59B6` |
+| Surface Dark | `#0D0D0D` / `#111111` |
+| Card Glass | `#1A1A2E` |
+| Text Cream | `#F5F0EB` |
+| Text Muted | `#8B8B9E` |
+| Accent Wine | `#8B0051` |
 
-### Visual Style
-- **Glassmorphism**: `backdrop-blur`, semi-transparent cards with subtle borders
-- **Gradients**: soft diagonal gradients (rose → lilac, dark to darker)
-- **Borders**: fully rounded (`rounded-2xl`, `rounded-full`)
-- **Shadows**: glow effects on primary actions using the accent color
-- **Animations**: Framer Motion for page transitions and microinteractions
-- **Typography**: clean sans-serif, emotionally warm (consider Geist or Plus Jakarta Sans)
-- **Dark-first**: dark mode is the primary experience; light mode is secondary
+### Estilo visual
+- **Glassmorphism**: `backdrop-blur`, cards semi-transparentes com bordas sutis
+- **Gradientes**: diagonais suaves (rose → lilac)
+- **Bordas**: `rounded-2xl`, `rounded-full`
+- **Sombras**: glow effects no accent color
+- **Animações**: Framer Motion — scroll-triggered, fadeUp, scale
+- **Tipografia**: Plus Jakarta Sans
+- **Dark-first**: modo escuro como experiência primária
 
-### Tone
-The UI should feel intimate, not corporate. Warm, not clinical. Every empty state, tooltip, and notification should feel like it was written by a person who cares about the relationship.
-
----
-
-## Key Domain Concepts
-
-- **Couple**: two linked user accounts; core unit of the app
-- **Event**: calendar entry that can be private, shared, or couple-only
-- **Memory**: media-attached moment (photo + caption + date) tied to the relationship timeline
-- **Capsule**: scheduled message to be revealed at a future date
-- **Counter**: days-together tracker tied to the relationship start date
-- **Plan**: premium subscription granting advanced features
+### Tom
+Íntimo, não corporativo. Quente, não clínico.
 
 ---
 
 ## Coding Conventions
 
-- Use TypeScript strictly — no `any`, prefer explicit types and Zod for runtime validation
-- All DB access goes through Prisma; never raw SQL unless explicitly needed
-- Supabase client: use server client in Server Components / Route Handlers, browser client in Client Components
-- Components: prefer Server Components by default; add `"use client"` only when needed
-- API routes live in `app/api/` and return typed JSON responses
-- File naming: `kebab-case` for files and folders, `PascalCase` for components
-- Avoid barrel exports (`index.ts`) — import directly from the source file
-- Forms: use `react-hook-form` + `zod` for validation
-- Realtime: use Supabase Realtime channels for live calendar sync and chat
+- TypeScript estrito — sem `any`
+- Componentes: Server Components por padrão; `"use client"` só quando necessário
+- Nomenclatura: `kebab-case` para arquivos, `PascalCase` para componentes
+- Sem barrel exports (`index.ts`) — importar direto da fonte
 
 ---
 
-## Build Milestones
+## Milestones da Landing Page
 
-> Milestones seguem o plano detalhado em [docs/PLAN.md](docs/PLAN.md). A ordem foi reorganizada para frontend-first (ver PLAN.md).
-
-| # | Milestone (PLAN.md ref) | Status |
+| # | Milestone | Status |
 |---|---|---|
-| M1 | Setup & Design System | ✅ Concluída (pendente: `.env.example`) |
-| M2 | Landing Page | ✅ Concluída |
-| M3 | Auth UI & Onboarding | ⬜ Próxima |
-| M4 | App Shell & Dashboard UI | ⬜ |
-| M5 | Calendário UI | ⬜ |
-| M6 | Chat UI | ⬜ |
-| M7 | Memórias UI | ⬜ |
-| M8 | Backend Foundation | ⬜ |
-| M9 | Backend Calendário | ⬜ |
-| M10 | Backend Social | ⬜ |
-| M11 | Notificações | ⬜ |
-| M12 | Premium & Stripe | ⬜ |
-| M13 | Polish & Qualidade | ⬜ |
-| M14 | Deploy | ⬜ |
+| L1 | Setup & Design System | ✅ Concluída |
+| L2 | Landing Page inicial | ✅ Concluída |
+| L3 | Redesign & melhorias visuais | ⬜ Próxima |
+| L4 | Estratégia de conversão (App Store / monetização) | ⬜ |
+| L5 | SEO, OG tags, analytics | ⬜ |
+| L6 | Deploy & domínio | ⬜ |
 
 ---
 
-## Environment Variables (required)
+## Estratégia de Monetização (ver PLAN.md)
 
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+O app será distribuído via **App Store e Google Play**. A landing page deve:
 
-# Database (Prisma)
-DATABASE_URL=
-DIRECT_URL=
+1. Redirecionar CTAs para os links das lojas (App Store / Play Store)
+2. Capturar e-mails de interesse (waitlist) antes do lançamento
+3. Mostrar preços como referência — a cobrança real acontece dentro do app via **In-App Purchase (IAP)** das lojas
 
-# Stripe
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+> Não usar Stripe diretamente — as lojas cobram 15-30% e exigem que assinaturas sejam via IAP. Stripe pode ser usado apenas para assinaturas **web-only** (ex: acesso via browser), se for o caso.
 
-# Resend
-RESEND_API_KEY=
+---
 
-# App
-NEXT_PUBLIC_APP_URL=
+## Git Flow
+
+**Início de milestone:**
+```
+git checkout -b feat/<nome-da-branch>
 ```
 
----
-
-## Notes
-
-- The app is intentionally scoped to **two users per couple** — not a general multi-user system
-- Premium features should be gated via a `plan` field on the couple entity
-- Emotional copywriting matters — placeholder text, empty states, and notifications should reflect the app's warm, intimate tone
-- Accessibility and mobile-first responsiveness are non-negotiable from the start
-
----
-
-## Milestone Git Flow
-
-**Início de cada milestone:**
-1. Criar branch a partir de `main` com o nome definido no PLAN.md (ex: `git checkout -b feat/auth-ui`)
-
-**Final de cada milestone:**
-1. Marcar todas as entregas como `[x]` e adicionar `✅ CONCLUÍDA` ao heading no `docs/PLAN.md`
-2. Atualizar status da milestone no `CLAUDE.md` (tabela de milestones)
-3. Fazer o commit final com a mensagem exata definida no bloco `Commit final` do PLAN.md
-4. Push da branch: `git push -u origin <branch>`
-5. Abrir PR para `main` via `gh pr create`
-6. Fazer merge: `gh pr merge --merge --delete-branch`
-7. Deletar branch local: `git branch -d <branch>`
-8. Voltar para `main`: `git checkout main && git pull`
+**Final de milestone:**
+1. Commit com mensagem semântica
+2. `git push -u origin <branch>`
+3. `gh pr create` → `gh pr merge --merge --delete-branch`
+4. `git branch -d <branch>` → `git checkout main && git pull`
