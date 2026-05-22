@@ -83,27 +83,35 @@ feat(marketing): add full landing page with pricing and animations
 
 ---
 
-## M3 — Auth UI & Onboarding
+## M3 — Auth UI & Onboarding ✅ CONCLUÍDA
 
 **Branch:** `feat/auth-ui`
 **Objetivo:** Todas as telas de autenticação e onboarding com UI completa e navegação funcional. Sem auth real — formulários com mock/redirect.
 
+> **Pivot:** tela de login transformada em página de captura de waitlist (email → `/api/waitlist`) com design espresso/bordeaux alinhado à nova identidade visual.
+
 ### Entregas
 
-- [ ] Tela de login (`app/(auth)/login/page.tsx`): email + senha + botão Google
-- [ ] Tela de cadastro (`app/(auth)/signup/page.tsx`): nome + email + senha
-- [ ] Tela de recuperação de senha (`app/(auth)/forgot-password/page.tsx`)
-- [ ] Tela de convite do parceiro(a) (`app/(auth)/invite/page.tsx`)
-- [ ] Layout compartilhado de auth com identidade visual (gradiente lateral, logo)
-- [ ] Validação de formulários com `react-hook-form` + `zod` (client-side apenas)
-- [ ] Estados de loading e erro nos formulários
-- [ ] Onboarding step 1: perfil individual (nome, foto, data de nascimento)
-- [ ] Onboarding step 2: data de início do relacionamento
-- [ ] Onboarding step 3: escolha de tema visual (rosa, lilás, vinho)
-- [ ] Onboarding step 4: envio de convite ao parceiro(a)
-- [ ] Barra de progresso no onboarding
-- [ ] Navegação entre steps com animação de slide
-- [ ] Redirect final para `/dashboard` (mock)
+- [x] Tela de login (`app/(auth)/login/page.tsx`): waitlist email capture (pivot de auth form)
+- [x] Tela de cadastro (`app/(auth)/signup/page.tsx`): redirect → `/login`
+- [x] Tela de recuperação de senha (`app/(auth)/forgot-password/page.tsx`): redirect → `/login`
+- [x] Tela de convite do parceiro(a) (`app/(auth)/invite/page.tsx`): redirect → `/login`
+- [x] Layout compartilhado de auth simplificado (pass-through)
+- [x] Validação de formulários com `react-hook-form` + `zod` (waitlist form)
+- [x] Estados de loading e erro nos formulários
+- [x] Onboarding step 1: perfil individual (nome, foto, data de nascimento)
+- [x] Onboarding step 2: data de início do relacionamento
+- [x] Onboarding step 3: escolha de tema visual (rosa, lilás, vinho)
+- [x] Onboarding step 4: envio de convite ao parceiro(a)
+- [x] Barra de progresso no onboarding
+- [x] Navegação entre steps com animação de slide
+- [x] Redirect final para `/dashboard` (mock)
+- [x] API route `/api/waitlist` para captura de emails
+- [x] `AppMotionConfig` global com `reducedMotion="user"`
+- [x] Reduced-motion CSS global em `globals.css`
+- [x] Migração de design do onboarding para paleta espresso/bordeaux
+- [x] Fix de memory leak de blob URL no avatar do onboarding
+- [x] Correções de acessibilidade (aria-labels, progressbar, htmlFor/id)
 
 **Commit final:**
 ```

@@ -120,7 +120,7 @@ The UI should feel intimate, not corporate. Warm, not clinical. Every empty stat
 |---|---|---|
 | M1 | Setup & Design System | ✅ Concluída (pendente: `.env.example`) |
 | M2 | Landing Page | ✅ Concluída |
-| M3 | Auth UI & Onboarding | ⬜ Próxima |
+| M3 | Auth UI & Onboarding | ✅ Concluída |
 | M4 | App Shell & Dashboard UI | ⬜ |
 | M5 | Calendário UI | ⬜ |
 | M6 | Chat UI | ⬜ |

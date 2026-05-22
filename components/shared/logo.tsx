@@ -23,8 +23,8 @@ export function Logo({ className, size = "md", showText = true }: LogoProps) {
       >
         <defs>
           <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#e91e8c" />
-            <stop offset="100%" stopColor="#9b59b6" />
+            <stop offset="0%" stopColor="#CF4558" />
+            <stop offset="100%" stopColor="#7B2030" />
           </linearGradient>
         </defs>
         <path
@@ -35,7 +35,7 @@ export function Logo({ className, size = "md", showText = true }: LogoProps) {
       {showText && (
         <span
           className={cn(
-            "font-bold tracking-tight text-gradient-rose",
+            "font-bold tracking-tight text-ivory",
             textClass,
           )}
         >

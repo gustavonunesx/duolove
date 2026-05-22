@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -71,6 +71,18 @@ const THEMES = [
 ];
 
 const TOTAL_STEPS = 4;
+const ease = [0.16, 1, 0.3, 1] as const;
+
+// ── Shared styles ─────────────────────────────────────────
+
+const primaryBtn =
+  "glow-bordeaux flex items-center justify-center gap-2 rounded-xl bg-bordeaux px-5 py-3 text-sm font-semibold text-ivory transition-all hover:bg-bordeaux-light disabled:opacity-60 active:scale-[0.98]";
+
+const backBtn =
+  "flex items-center gap-2 rounded-xl border border-mahogany-light bg-mahogany px-5 py-3 text-sm font-medium text-ivory transition-all hover:bg-mahogany-light";
+
+const inputCls =
+  "w-full rounded-xl border border-mahogany-light bg-espresso px-4 py-3 text-sm text-ivory outline-none transition-all placeholder:text-taupe/60 focus:border-bordeaux focus:ring-2 focus:ring-bordeaux/25 [color-scheme:dark]";
 
 // ── Progress bar ──────────────────────────────────────────
 
@@ -79,14 +91,13 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
     <div className="mb-8">
       <div className="mb-2 flex items-center justify-between">
         <Logo size="sm" />
-        <span className="text-xs text-[#8b8b9e]">
+        <span className="text-xs text-taupe" aria-live="polite">
           {current} de {total}
         </span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-white/8">
+      <div className="h-1.5 overflow-hidden rounded-full bg-mahogany-light" role="progressbar" aria-valuenow={current} aria-valuemin={1} aria-valuemax={total}>
         <motion.div
-          className="h-full rounded-full"
-          style={{ background: "linear-gradient(90deg, #e91e8c, #9b59b6)" }}
+          className="h-full rounded-full bg-bordeaux"
           initial={{ width: 0 }}
           animate={{ width: `${(current / total) * 100}%` }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -101,6 +112,7 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
 function Step1({ onNext }: { onNext: (data: Step1Form) => void }) {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const blobUrlRef = useRef<string | null>(null);
 
   const {
     register,
@@ -113,41 +125,51 @@ function Step1({ onNext }: { onNext: (data: Step1Form) => void }) {
 
   function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setAvatarPreview(url);
-    }
+    if (!file) return;
+    if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
+    blobUrlRef.current = URL.createObjectURL(file);
+    setAvatarPreview(blobUrlRef.current);
   }
+
+  useEffect(() => {
+    return () => {
+      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
+    };
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onNext)} noValidate className="space-y-5">
       <div className="mb-6">
-        <h2 className="mb-1 text-2xl font-bold text-[#f5f0eb]">Seu perfil 👤</h2>
-        <p className="text-sm text-[#8b8b9e]">
-          Vamos personalizar a sua experiência.
-        </p>
+        <h2 className="mb-1 text-2xl font-bold text-ivory">
+          Seu perfil <span aria-hidden="true">👤</span>
+        </h2>
+        <p className="text-sm text-taupe">Vamos personalizar a sua experiência.</p>
       </div>
 
-      {/* Avatar upload */}
+      {/* Avatar */}
       <div className="flex justify-center">
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="group relative h-24 w-24 overflow-hidden rounded-full border-2 border-dashed border-white/20 bg-white/5 transition-all hover:border-[#e91e8c]/50 hover:bg-white/10"
+          className="group relative h-24 w-24 overflow-hidden rounded-full border-2 border-dashed border-mahogany-light bg-espresso transition-all hover:border-bordeaux/50 hover:bg-mahogany"
           aria-label="Adicionar foto de perfil"
         >
           {avatarPreview ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={avatarPreview} alt="Avatar" className="h-full w-full object-cover" />
+            <img
+              src={avatarPreview}
+              alt="Pré-visualização do avatar"
+              className="h-full w-full object-cover"
+            />
           ) : (
-            <div className="flex flex-col items-center justify-center h-full gap-1">
-              <User className="h-7 w-7 text-[#8b8b9e] group-hover:text-[#e91e8c]" />
-              <Camera className="h-4 w-4 text-[#8b8b9e]/50 group-hover:text-[#e91e8c]/70" />
+            <div className="flex h-full flex-col items-center justify-center gap-1">
+              <User className="h-7 w-7 text-taupe transition-colors group-hover:text-bordeaux-light" />
+              <Camera className="h-4 w-4 text-taupe/50 transition-colors group-hover:text-bordeaux-light/70" />
             </div>
           )}
           {avatarPreview && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-              <Camera className="h-6 w-6 text-white" />
+            <div className="absolute inset-0 flex items-center justify-center bg-espresso/50 opacity-0 transition-opacity group-hover:opacity-100">
+              <Camera className="h-6 w-6 text-ivory" />
             </div>
           )}
         </button>
@@ -157,53 +179,56 @@ function Step1({ onNext }: { onNext: (data: Step1Form) => void }) {
           accept="image/*"
           className="hidden"
           onChange={handleAvatarChange}
+          aria-hidden="true"
+          tabIndex={-1}
         />
       </div>
-      <p className="text-center text-xs text-[#8b8b9e]">Foto de perfil (opcional)</p>
+      <p className="text-center text-xs text-taupe">Foto de perfil (opcional)</p>
 
       {/* Name */}
       <div>
-        <label className="mb-1.5 block text-xs font-medium text-[#8b8b9e]">
-          Como você quer ser chamado(a)?
+        <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-taupe">
+          Como você quer ser chamado?
         </label>
         <input
+          id="name"
           type="text"
           placeholder="Seu nome"
           autoComplete="given-name"
           {...register("name")}
-          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-[#f5f0eb] placeholder-[#8b8b9e]/60 outline-none transition-all focus:border-[#e91e8c]/60 focus:ring-2 focus:ring-[#e91e8c]/20"
+          className={inputCls}
           aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "name-err" : undefined}
         />
         {errors.name && (
-          <p className="mt-1.5 text-xs text-red-400">{errors.name.message}</p>
+          <p id="name-err" className="mt-1.5 text-xs text-rose-warm">
+            {errors.name.message}
+          </p>
         )}
       </div>
 
       {/* Birth date */}
       <div>
-        <label className="mb-1.5 block text-xs font-medium text-[#8b8b9e]">
+        <label htmlFor="birthDate" className="mb-1.5 block text-xs font-medium text-taupe">
           Data de nascimento
         </label>
         <input
+          id="birthDate"
           type="date"
           {...register("birthDate")}
           max={new Date().toISOString().split("T")[0]}
-          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-[#f5f0eb] outline-none transition-all focus:border-[#e91e8c]/60 focus:ring-2 focus:ring-[#e91e8c]/20 [color-scheme:dark]"
+          className={inputCls}
           aria-invalid={!!errors.birthDate}
+          aria-describedby={errors.birthDate ? "birthdate-err" : undefined}
         />
         {errors.birthDate && (
-          <p className="mt-1.5 text-xs text-red-400">{errors.birthDate.message}</p>
+          <p id="birthdate-err" className="mt-1.5 text-xs text-rose-warm">
+            {errors.birthDate.message}
+          </p>
         )}
       </div>
 
-      <button
-        type="submit"
-        className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all active:scale-[0.98]"
-        style={{
-          background: "linear-gradient(135deg, #e91e8c 0%, #9b59b6 100%)",
-          boxShadow: "0 0 20px rgba(233,30,140,0.4), 0 0 40px rgba(233,30,140,0.15)",
-        }}
-      >
+      <button type="submit" className={`${primaryBtn} w-full`}>
         Continuar
         <ArrowRight className="h-4 w-4" />
       </button>
@@ -229,72 +254,58 @@ function Step2({
   return (
     <form onSubmit={handleSubmit(onNext)} noValidate className="space-y-5">
       <div className="mb-6">
-        <h2 className="mb-1 text-2xl font-bold text-[#f5f0eb]">
-          Quando tudo começou? 💕
+        <h2 className="mb-1 text-2xl font-bold text-ivory">
+          Quando tudo começou? <span aria-hidden="true">💕</span>
         </h2>
-        <p className="text-sm text-[#8b8b9e]">
+        <p className="text-sm text-taupe">
           A data que mudou tudo. Vamos comemorar juntos cada ano.
         </p>
       </div>
 
       <div>
-        <label className="mb-1.5 block text-xs font-medium text-[#8b8b9e]">
+        <label htmlFor="startDate" className="mb-1.5 block text-xs font-medium text-taupe">
           Data de início do relacionamento
         </label>
         <input
+          id="startDate"
           type="date"
           {...register("startDate")}
           disabled={noOfficialDate}
           max={new Date().toISOString().split("T")[0]}
-          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-[#f5f0eb] outline-none transition-all focus:border-[#e91e8c]/60 focus:ring-2 focus:ring-[#e91e8c]/20 disabled:opacity-40 [color-scheme:dark]"
+          className={`${inputCls} disabled:opacity-40`}
         />
       </div>
 
-      {/* No official date */}
       <button
         type="button"
         onClick={() => setValue("noOfficialDate", !noOfficialDate)}
+        aria-pressed={noOfficialDate}
         className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${
           noOfficialDate
-            ? "border-[#e91e8c]/40 bg-[#e91e8c]/10"
-            : "border-white/10 bg-white/5 hover:border-white/20"
+            ? "border-bordeaux/40 bg-bordeaux/10"
+            : "border-mahogany-light bg-espresso hover:border-bordeaux/30"
         }`}
       >
         <div
           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
-            noOfficialDate
-              ? "border-[#e91e8c] bg-[#e91e8c]"
-              : "border-white/30 bg-transparent"
+            noOfficialDate ? "border-bordeaux bg-bordeaux" : "border-mahogany-light bg-transparent"
           }`}
+          aria-hidden="true"
         >
-          {noOfficialDate && <Check className="h-3 w-3 text-white" />}
+          {noOfficialDate && <Check className="h-3 w-3 text-ivory" />}
         </div>
         <div>
-          <p className="text-sm font-medium text-[#f5f0eb]">
-            Ainda não temos uma data oficial
-          </p>
-          <p className="text-xs text-[#8b8b9e]">Tudo bem! Vocês são o que importa.</p>
+          <p className="text-sm font-medium text-ivory">Ainda não temos uma data oficial</p>
+          <p className="text-xs text-taupe">Tudo bem. Vocês são o que importa.</p>
         </div>
       </button>
 
-      {/* Navigation */}
       <div className="flex gap-3 pt-2">
-        <button
-          type="button"
-          onClick={onBack}
-          className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-[#f5f0eb] transition-all hover:bg-white/10"
-        >
+        <button type="button" onClick={onBack} className={backBtn}>
           <ArrowLeft className="h-4 w-4" />
           Voltar
         </button>
-        <button
-          type="submit"
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all active:scale-[0.98]"
-          style={{
-            background: "linear-gradient(135deg, #e91e8c 0%, #9b59b6 100%)",
-            boxShadow: "0 0 20px rgba(233,30,140,0.4), 0 0 40px rgba(233,30,140,0.15)",
-          }}
-        >
+        <button type="submit" className={`${primaryBtn} flex-1`}>
           Continuar
           <ArrowRight className="h-4 w-4" />
         </button>
@@ -322,55 +333,54 @@ function Step3({
   return (
     <form onSubmit={handleSubmit(onNext)} noValidate className="space-y-5">
       <div className="mb-6">
-        <h2 className="mb-1 text-2xl font-bold text-[#f5f0eb]">
-          Escolham o estilo de vocês 🎨
+        <h2 className="mb-1 text-2xl font-bold text-ivory">
+          Escolham o estilo de vocês <span aria-hidden="true">🎨</span>
         </h2>
-        <p className="text-sm text-[#8b8b9e]">
+        <p className="text-sm text-taupe">
           O tema pode ser trocado depois nas configurações.
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3" role="radiogroup" aria-label="Escolha de tema">
         {THEMES.map((theme) => (
           <button
             key={theme.id}
             type="button"
             onClick={() => setValue("theme", theme.id)}
+            aria-pressed={selectedTheme === theme.id}
             className={`flex w-full items-center gap-4 rounded-xl border px-4 py-4 text-left transition-all ${
               selectedTheme === theme.id
                 ? "border-transparent"
-                : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8"
+                : "border-mahogany-light bg-espresso hover:border-bordeaux/20"
             }`}
             style={
               selectedTheme === theme.id
                 ? {
                     borderColor: theme.ring,
-                    background: `${theme.ring}15`,
-                    boxShadow: `0 0 20px ${theme.ring}25`,
+                    background: `${theme.ring}18`,
+                    boxShadow: `0 0 16px ${theme.ring}20`,
                   }
                 : undefined
             }
           >
-            {/* Swatch */}
             <div
               className="h-12 w-12 shrink-0 rounded-xl"
               style={{ background: theme.gradient }}
+              aria-hidden="true"
             />
-
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-base">{theme.emoji}</span>
-                <span className="font-semibold text-[#f5f0eb]">{theme.label}</span>
+                <span aria-hidden="true">{theme.emoji}</span>
+                <span className="font-semibold text-ivory">{theme.label}</span>
               </div>
-              <p className="text-xs text-[#8b8b9e]">{theme.desc}</p>
+              <p className="text-xs text-taupe">{theme.desc}</p>
             </div>
-
-            {/* Selected indicator */}
             <div
               className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-all ${
                 selectedTheme === theme.id ? "opacity-100" : "opacity-0"
               }`}
               style={{ background: theme.ring }}
+              aria-hidden="true"
             >
               <Check className="h-3 w-3 text-white" />
             </div>
@@ -379,22 +389,11 @@ function Step3({
       </div>
 
       <div className="flex gap-3 pt-2">
-        <button
-          type="button"
-          onClick={onBack}
-          className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-[#f5f0eb] transition-all hover:bg-white/10"
-        >
+        <button type="button" onClick={onBack} className={backBtn}>
           <ArrowLeft className="h-4 w-4" />
           Voltar
         </button>
-        <button
-          type="submit"
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all active:scale-[0.98]"
-          style={{
-            background: "linear-gradient(135deg, #e91e8c 0%, #9b59b6 100%)",
-            boxShadow: "0 0 20px rgba(233,30,140,0.4), 0 0 40px rgba(233,30,140,0.15)",
-          }}
-        >
+        <button type="submit" className={`${primaryBtn} flex-1`}>
           Continuar
           <ArrowRight className="h-4 w-4" />
         </button>
@@ -409,7 +408,9 @@ function Step4({ onBack, onFinish }: { onBack: () => void; onFinish: () => void 
   const [copied, setCopied] = useState(false);
   const [finishing, setFinishing] = useState(false);
 
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`Amor, vamos usar o DuoLove juntos? 💕 Entra com esse link: ${MOCK_LINK}`)}`;
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+    `Amor, vamos usar o DuoLove juntos? 💕 Entra com esse link: ${MOCK_LINK}`
+  )}`;
 
   async function copyLink() {
     await navigator.clipboard.writeText(MOCK_LINK);
@@ -426,29 +427,30 @@ function Step4({ onBack, onFinish }: { onBack: () => void; onFinish: () => void 
   return (
     <div className="space-y-5">
       <div className="mb-6">
-        <h2 className="mb-1 text-2xl font-bold text-[#f5f0eb]">
-          Convide seu amor 💌
+        <h2 className="mb-1 text-2xl font-bold text-ivory">
+          Convide seu amor <span aria-hidden="true">💌</span>
         </h2>
-        <p className="text-sm text-[#8b8b9e]">
+        <p className="text-sm text-taupe">
           A experiência completa só começa quando vocês dois estiverem aqui.
         </p>
       </div>
 
-      {/* Code */}
-      <div className="rounded-xl border border-[#e91e8c]/20 bg-[#e91e8c]/5 p-4 text-center">
-        <p className="mb-1 text-xs text-[#8b8b9e]">Seu código de convite</p>
-        <p className="text-2xl font-bold tracking-widest text-[#f5f0eb]">{MOCK_CODE}</p>
+      {/* Invite code */}
+      <div className="rounded-xl border border-bordeaux/20 bg-bordeaux/5 p-4 text-center">
+        <p className="mb-1 text-xs text-taupe">Seu código de convite</p>
+        <p className="text-2xl font-bold tracking-widest text-ivory">{MOCK_CODE}</p>
       </div>
 
       {/* Link + copy */}
-      <div className="flex items-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-white/5 p-3">
-        <p className="flex-1 truncate text-xs text-[#8b8b9e]">{MOCK_LINK}</p>
+      <div className="flex items-center gap-2 overflow-hidden rounded-xl border border-mahogany-light bg-espresso p-3">
+        <p className="flex-1 truncate text-xs text-taupe">{MOCK_LINK}</p>
         <button
           onClick={copyLink}
+          aria-label={copied ? "Link copiado" : "Copiar link de convite"}
           className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
             copied
               ? "bg-green-500/20 text-green-400"
-              : "bg-white/10 text-[#f5f0eb] hover:bg-white/20"
+              : "bg-mahogany-light text-ivory hover:bg-mahogany"
           }`}
         >
           {copied ? (
@@ -476,24 +478,15 @@ function Step4({ onBack, onFinish }: { onBack: () => void; onFinish: () => void 
         Compartilhar via WhatsApp
       </a>
 
-      {/* Navigation */}
       <div className="flex gap-3 pt-2">
-        <button
-          type="button"
-          onClick={onBack}
-          className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-[#f5f0eb] transition-all hover:bg-white/10"
-        >
+        <button type="button" onClick={onBack} className={backBtn}>
           <ArrowLeft className="h-4 w-4" />
           Voltar
         </button>
         <button
           onClick={handleFinish}
           disabled={finishing}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all disabled:opacity-60 active:scale-[0.98]"
-          style={{
-            background: "linear-gradient(135deg, #e91e8c 0%, #9b59b6 100%)",
-            boxShadow: "0 0 20px rgba(233,30,140,0.4), 0 0 40px rgba(233,30,140,0.15)",
-          }}
+          className={`${primaryBtn} flex-1`}
         >
           {finishing ? (
             <>
@@ -501,17 +494,18 @@ function Step4({ onBack, onFinish }: { onBack: () => void; onFinish: () => void 
               Abrindo o DuoLove...
             </>
           ) : (
-            "Começar a usar 🚀"
+            <>
+              Começar a usar <span aria-hidden="true">🚀</span>
+            </>
           )}
         </button>
       </div>
 
-      {/* Skip */}
       <div className="text-center">
         <button
           onClick={handleFinish}
           disabled={finishing}
-          className="text-sm text-[#8b8b9e] transition-colors hover:text-[#f5f0eb]"
+          className="text-sm text-taupe transition-colors hover:text-taupe-light disabled:opacity-40"
         >
           Pular por agora ›
         </button>
@@ -520,19 +514,26 @@ function Step4({ onBack, onFinish }: { onBack: () => void; onFinish: () => void 
   );
 }
 
-// ── Main onboarding page ──────────────────────────────────
+// ── Slide variants ───────────────────────────────────────
 
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 60 : -60,
+    x: direction > 0 ? 56 : -56,
     opacity: 0,
   }),
-  center: { x: 0, opacity: 1 },
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: 0.35, ease },
+  },
   exit: (direction: number) => ({
-    x: direction > 0 ? -60 : 60,
+    x: direction > 0 ? -56 : 56,
     opacity: 0,
+    transition: { duration: 0.2, ease: [0.5, 0, 1, 0.5] as const },
   }),
 };
+
+// ── Main page ─────────────────────────────────────────────
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -554,22 +555,22 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-[#0d0d0d] px-6 py-12">
-      {/* Background blobs */}
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-espresso px-6 py-12">
+      {/* Ambient glow */}
       <div
-        className="pointer-events-none absolute -left-32 -top-32 h-[400px] w-[400px] rounded-full opacity-15"
-        style={{ background: "radial-gradient(circle, #e91e8c 0%, transparent 70%)" }}
-      />
-      <div
-        className="pointer-events-none absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, #9b59b6 0%, transparent 70%)" }}
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[50vh] opacity-[0.06]"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 0%, oklch(48% 0.14 12), transparent)",
+        }}
       />
 
       <div className="relative w-full max-w-md">
         <ProgressBar current={step} total={TOTAL_STEPS} />
 
         {/* Card */}
-        <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#1a1a2e]/60 p-8 backdrop-blur-xl">
+        <div className="overflow-hidden rounded-2xl border border-mahogany-light/30 bg-mahogany p-8">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={step}
@@ -578,7 +579,6 @@ export default function OnboardingPage() {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.3, ease: "easeInOut" }}
             >
               {step === 1 && <Step1 onNext={goNext} />}
               {step === 2 && <Step2 onNext={goNext} onBack={goBack} />}
@@ -588,8 +588,11 @@ export default function OnboardingPage() {
           </AnimatePresence>
         </div>
 
-        {/* Step dots */}
-        <div className="mt-6 flex justify-center gap-2">
+        {/* Progress dots */}
+        <div
+          className="mt-6 flex justify-center gap-2"
+          aria-hidden="true"
+        >
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
             <motion.div
               key={i}
@@ -597,9 +600,8 @@ export default function OnboardingPage() {
                 width: step === i + 1 ? 24 : 8,
                 opacity: step === i + 1 ? 1 : 0.3,
               }}
-              transition={{ duration: 0.3 }}
-              className="h-2 rounded-full"
-              style={{ background: "linear-gradient(90deg, #e91e8c, #9b59b6)" }}
+              transition={{ duration: 0.3, ease }}
+              className="h-2 rounded-full bg-bordeaux"
             />
           ))}
         </div>

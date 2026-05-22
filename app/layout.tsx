@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import { ThemeProvider } from "@/components/shared/theme-provider";
+import { AppMotionConfig } from "@/components/shared/motion-config";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -59,7 +60,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AppMotionConfig>{children}</AppMotionConfig>
         </ThemeProvider>
       </body>
     </html>
